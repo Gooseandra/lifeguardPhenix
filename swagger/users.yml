@@ -1,0 +1,103 @@
+id:
+  delete:
+    operationId: eraseUser
+    parameters:
+      - { format: uint64, in: path, name: id, required: true, type: integer }
+      - { in: body, name: body, schema: { properties: { time: { type: string } }, required: [ time ] } }
+    responses:
+      200: { description: OK }
+      400: { description: Bad request }
+      404: { description: Not Found }
+      500: { description: Unknown Error }
+  get:
+    operationId: getUser
+    parameters: [ { format: uint64, in: path, name: id, required: true, type: integer } ]
+    responses:
+      200:
+        description: OK
+        schema: { $ref: "#/getUserPayload"}
+  post:
+    operationId: updateUser
+    parameters:
+      - { format: uint64, in: path, name: id, required: true, type: integer }
+      - { in: body, name: body, schema: { $ref: "#/updateUserPayload" } }
+    responses:
+      200: { description: OK }
+root:
+  get:
+    operationId: listUsers
+    parameters:
+      - { in: header,  name: Ses-Id, type: string }
+      - { default: 100, format: uint32, in: query, name: count, type: integer }
+      - { default: 0, format: uint64, in: query, name: skip, type: integer }
+    responses:
+      200: { description: OK, schema: { $ref: "#/listUsersPayload" } }
+      400: { description: Bag Request }
+      401: { description: Unauthorized }
+      500: { description: Internal error }
+  post:
+    operationId: createUser
+    parameters:
+      - { in: header, name: X-Ses-Req, type: string }
+      - { in: body, name: data, schema: { $ref: "#/new" } }
+    responses:
+      200: { description: пользователь создан, schema: { format: uint64, type: integer } }
+      400: { description: плохой запрос }
+      404: { description: Not Found }
+      500: { description: неизвестная ошибка }
+new:
+  properties:
+    email: { maxLength: 255, type: string }
+    phone: { maxLength: 11, type: string }
+    firstName: { maxLength: 255, type: string }
+    lastName: { maxLength: 255, type: string }
+    middleName: { maxLength: 255, type: string }
+    nickName: { maxLength: 255, type: string }
+    password: { maxLength: 255, type: string }
+    startTime: { maxLength: 255, type: string }
+    tg: { maxLength: 255, type: string }
+    vk: { maxLength: 255, type: string }
+  required: [ email, phone, firstName, lastName, middleName, nickName, password, vk, tg ]
+getUserPayload:
+  properties:
+    id: { format: uint64, type: integer }
+    email: { maxLength: 255, type: string }
+    phone: { maxLength: 11, type: string }
+    firstName: { maxLength: 255, type: string }
+    lastName: { maxLength: 255, type: string }
+    middleName: { maxLength: 255, type: string }
+    nickName: { maxLength: 255, type: string }
+    finishTime: { maxLength: 255, type: string }
+    startTime: { maxLength: 255, type: string }
+    tg: { maxLength: 255, type: string }
+    vk: { maxLength: 255, type: string }
+listUsersPayload:
+  items:
+    properties:
+      id: { format: uint64, type: integer }
+      email: { maxLength: 255, type: string }
+      phone: { maxLength: 11, type: string }
+      firstName: { maxLength: 255, type: string }
+      lastName: { maxLength: 255, type: string }
+      middleName: { maxLength: 255, type: string }
+      nickName: { maxLength: 255, type: string }
+      password: { maxLength: 255, type: string }
+      finishTime: { maxLength: 255, type: string }
+      startTime: { maxLength: 255, type: string }
+      tg: { maxLength: 255, type: string }
+      vk: { maxLength: 255, type: string }
+  type: array
+updateUserPayload:
+  properties:
+    id: { format: uint64, x-nullable: true, type: integer }
+    email: { maxLength: 255, x-nullable: true, type: string }
+    phone: { maxLength: 11, x-nullable: true, type: string }
+    firstName: { maxLength: 255, x-nullable: true, type: string }
+    lastName: { maxLength: 255, x-nullable: true, type: string }
+    middleName: { maxLength: 255, x-nullable: true, type: string }
+    nickName: { maxLength: 255, x-nullable: true, type: string }
+    password: { maxLength: 255, x-nullable: true, type: string }
+    finishTime: { maxLength: 255, x-nullable: true, type: string }
+    startTime: { maxLength: 255, x-nullable: true, type: string }
+    tg: { maxLength: 255, x-nullable: true, type: string }
+    vk: { maxLength: 255, x-nullable: true, type: string }

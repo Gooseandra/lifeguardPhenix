@@ -1,0 +1,16 @@
+consumes: [ "application/json" ]
+info: { description: "Приложение для МЧС", title: "mchs", version: "1.0.0" }
+paths:
+  /calls: { $ref: "swagger/calls.yml#/root" }
+  /calls/{id}: { $ref: "swagger/calls.yml#/id"}
+  /crews: { $ref: "swagger/crews.yml#/definitions/root" }
+  /crews/{id}: { $ref: "swagger/crews.yml#/definitions/id" }
+  /login: { $ref: "swagger/login.yml" }
+  /inventory: { $ref: "swagger/inventory.yml#/root" }
+  /inventory/{id}: { $ref: "swagger/inventory.yml#/id" }
+  /inventory/types: { $ref: "swagger/inventory.yml#/types" }
+  /users: { $ref: "swagger/users.yml#/root" }
+  /users/{id}: { $ref: "swagger/users.yml#/id" }
+produces: [ "application/json" ]
+schemes: [ "http" ]
+swagger: "2.0"

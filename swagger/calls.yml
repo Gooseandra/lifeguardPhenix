@@ -1,0 +1,79 @@
+id:
+  get:
+    operationId: getCall
+    parameters: [ { format: uint64, in: path , name: id, required: true, type: integer } ]
+    responses:
+      200:
+        description: OK
+        schema:
+          properties:
+            id: { format: uint64, type: integer }
+            address: { type: string }
+            crew: { format: uint64, type: integer }
+            description: { type: string }
+            summingUp: { type: string }
+            timeStart: { type: string }
+            timeFinish: { type: string }
+            title: { type: string }
+      400: { description: Bad request }
+      500: { description: Unknown error }
+  post:
+    operationId: updateCall
+    parameters:
+      - in: body
+        name: body
+        schema:
+          properties:
+            address: { type: string }
+            crew: { format: uint64, type: integer }
+            description: { type: string }
+            summingUp: { type: string }
+            timeStart: { type: string }
+            timeFinish: { type: string }
+            title: { type: string }
+          required: [ address, description, crew, timeStart, title ]
+      - { format: uint64, in: path, name: id, required: true, type: integer }
+    responses:
+      200: { description: OK, schema: { format: uint64, type: integer } }
+      400: { description: Bad request }
+      500: { description: Internal Error }
+root:
+  get:
+    operationId: listCall
+    parameters:
+      - { default: 100, format: uint32, in: query, name: count, type: integer }
+      - { default: 0, format: uint64, in: query, name: skip, type: integer }
+    responses:
+      200:
+        description: OK
+        schema:
+          items:
+            properties:
+              id: { format: uint64, type: integer }
+              address: { type: string }
+              description: { type: string }
+              timeStart: { type: string }
+              timeFinish: { type: string }
+              summingUp: { type: string }
+              title: { type: string }
+          type: array
+      400: { description: Bad request }
+      500: { description: Unknown error }
+  post:
+    operationId: createCall
+    parameters:
+      - in: body
+        name: body
+        schema:
+          properties:
+            address: { type: string }
+            crew: { format: uint64, type: integer }
+            description: { type: string }
+            timeStart: { type: string }
+            title: { type: string }
+          required: [ timeStart, description, address, title, crew ]
+    responses:
+      200: { description: OK, schema: { format: uint64, type: integer } }
+      400: { description: Bad request }
+      500: { description: Unknown error }
+

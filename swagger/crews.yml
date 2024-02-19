@@ -1,0 +1,72 @@
+definitions:
+  id:
+    get:
+      operationId: getCrew
+      parameters: [ { format: uint64, in: path, name: id, required: true, type: integer } ]
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              id: { format: uint64, type: integer }
+              calls: { items: { format: uint64, type: integer }, type: array }
+              comment: { type: string }
+              leader: { format: uint64, type: integer }
+              roaster: { items: { format: uint64, type: integer }, type: array }
+              timeFinish: { type: string }
+              timeStart: { type: string }
+        400: { description: Bad request }
+        500: { description: Unknown Error }
+    post:
+      operationId: updateCrew
+      parameters:
+        - { format: uint64, in: path, name: id, required: true, type: integer }
+        - in: body
+          name: body
+          schema:
+            properties:
+              comment: { type: string }
+              leader: { format: uint64, type: integer }
+              roster: { items: { format: uint64, type: integer }, type: array }
+              timeFinish: { type: string }
+              timeStart: { type: string }
+            required: [ leader, roaster, timeStart ]
+      responses:
+        200: { description: OK }
+        400: { description: Bad request }
+        500: { description: Unknown Error }
+  root:
+    get:
+      operationId: listCrew
+      parameters:
+        - { default: 100, format: uint32, in: query, name: count, type: integer }
+        - { default: 0, format: uint64, in: query, name: skip, type: integer }
+      responses:
+        200:
+          description: OK
+          schema:
+            items:
+              properties:
+                id: { format: uint64, type: integer }
+                comment: { type: string }
+                leader: { format: uint64, type: integer }
+                timeStart: { type: string }
+            type: array
+        400: { description: Bad request }
+        500: { description: Unknown error }
+    post:
+      operationId: createCrew
+      parameters:
+        - name: body
+          in: body
+          schema:
+            properties:
+              comment: { type: string }
+              leader: { format: uint64, type: integer }
+              roster: { items: { format: uint64, type: integer }, type: array }
+              timeStart: { type: string }
+            required: [ leader, roster, timeStart ]
+      responses:
+        200: { description: OK, schema: { type: string } }
+        400: { description: Bad request }
+        500: { description: Unknown error }

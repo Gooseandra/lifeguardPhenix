@@ -1,0 +1,84 @@
+id:
+  delete:
+    operationId: deleteInventoryItem
+    parameters: [ { format: uint64, in: path, name: id, required: true, type: integer } ]
+    responses:
+      200: { description: OK, schema: { format: uint64, type: integer } }
+      400: { description: Bad request }
+      404: { description: Not Found }
+      500: { description: Unknown Error }
+  get:
+    operationId: getInventoryItem
+    parameters: [ { format: uint64, in: path, name: id, required: true, type: integer } ]
+    responses:
+      200:
+        description: OK
+        schema:
+          properties:
+            id: { format: uint64, type: integer }
+            description: { type: string }
+            name: { type: string }
+            type: { type: string }
+            uniqNum: { format: uint64, type: integer }
+      400: { description: Bad request }
+      500: { description: Unknown Error }
+  post:
+    operationId: updateInventory
+    parameters:
+      - { format: uint64, in: path, name: id, required: true, type: integer }
+      - in: body
+        name: body
+        schema:
+          properties:
+            description: { type: string }
+            name: { type: string }
+            number: { format: uint64, type: integer }
+            type: { type: string }
+          required: [ description, name, number, type ]
+    responses:
+      200: { description: OK, schema: { format: uint64, type: integer } }
+      400: { description: Bad request }
+      500: { description: Unknown Error }
+root:
+  get:
+    operationId: ListInventoryItems
+    parameters:
+      - { default: 100, format: uint32, in: query, name: count, type: integer }
+      - { default: 0, format: uint64, in: query, name: skip, type: integer }
+    responses:
+      200:
+        description: OK
+        schema:
+          items:
+            properties:
+              "id": { format: uint64, type: integer }
+              "description": { type: string }
+              "name": { type: string }
+              "number": { format: uint64, type: integer }
+              "type": { type: string }
+          type: array
+      400: { description: Bad request }
+      500: { description: Unknown error }
+  post:
+    operationId: CreateInventoryItem
+    parameters:
+      - in: body
+        name: body
+        schema:
+          properties:
+            description: { type: string }
+            name: { type: string }
+            number: { format: uint64, type: integer }
+            type: { type: string }
+          required: [ description, name, number, type ]
+    responses:
+      200: { description: OK, schema: { format: uint64, type: integer } }
+      400: { description: Bad request }
+      500: { description: Unknown Error }
+types:
+  get:
+    operationId: getInventoryTypes
+    responses:
+      200: { description: OK, schema: { items: { type: string }, type: array } }
+      s400: { description: Bad request }
+      500: { description: Unknown Error }

@@ -1,0 +1,8 @@
+post:
+  operationId: login
+  parameters:
+    - { in: body , name: body , schema: { properties: { name: { type: string } , password: { type: string } } } }
+  responses:
+    200: { description: OK , schema: { type: string } }
+    404: { description: Неправильные пароль или юзер }
+    500: { description: Ошибка сервера }
